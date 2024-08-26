@@ -28,7 +28,7 @@ def create_course():
         (name, year1, year2),
       )
       db.commit()
-      course_id = db.execute("SELECT id FROM course WHERE name=? ", (name, )).fetchone()
+      course_id = db.execute("SELECT id FROM course WHERE name=? ", (name,)).fetchone()
       for g in group_ids:
         db.execute(
           "INSERT INTO course_group (course_id, group_id) VALUES (?, ?)", (course_id[0], g)
@@ -45,10 +45,9 @@ def courses():
   my_courses = db.execute(
     "SELECT course.id, course.created, course.name, course.year1, course.year2, "
     "group_concat(_group.name) as groups "
-    "FROM(course, course_group, _group) WHERE " 
+    "FROM(course, course_group, _group) WHERE "
     "course.id = course_group.course_id and _group.id = course_group.group_id "
   ).fetchall()
-  groups_course = db.execute("SELECT * FROM course_group")
   return render_template("courses/courses.html", courses=my_courses)
 
 
@@ -58,4 +57,14 @@ def course_page(iden):
   my_course = db.execute(
     "SELECT * FROM course WHERE id=?", iden
   ).fetchone()
-  return render_template("courses/course_template.html", name=my_course['name'])
+  students = db.execute(
+    "SELECT "
+    "course.id, course.name as c_name, course.year1, course.year2, _group.name as g_name, _group.is_gm, "
+    "student.id as st_id, student.name as st_name, student.surname "
+    "FROM(course, course_group, _group, student_group, student) "
+    "WHERE "
+    "course.id = course_group.course_id and _group.id = course_group.group_id and "
+    "_group.id = student_group.group_id and student_group.student_id = student.id"
+  ).fetchall()
+
+  return render_template("courses/course_template.html", name=my_course['name'], students=students)

@@ -26,4 +26,24 @@
     </div>
     </div>
 </nav>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Grupo</th>
+      </tr>
+    </thead>
+    <tbody>
+  {% for student in students %}
+    <tr>
+      <td> {{student['st_name']}} </a> </td>
+      <td> {{student['surname']}} </td>
+      <td> {{student['g_name']}} </td>
+    </tr>
+  {% endfor %}
+    </tbody>
+</table>
+
 {% endblock content %}
