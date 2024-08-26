@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h2>{% block title %}Tipos de calificaciones{% endblock title %}</h2>
+{% endblock header %}
+
+{% block content %}
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Tipo de evento</th>
+        <th>Valor mínimo</th>
+        <th>Valor máximo</th>
+        <th>Valores posibles</th>
+      </tr>
+    </thead>
+    <tbody>
+  {% for event in events %}
+    <tr>
+      {% set my_id = event['id'] %}
+      <td> {{event['name']}} </td>
+      <td> {{event['min_value']}} </td>
+      <td> {{event['max_value']}} </td>
+      <td> {{event['type']}} </td>
+    </tr>
+  {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

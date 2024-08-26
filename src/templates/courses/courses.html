@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h2>{% block title %}Courses{% endblock title %}</h2>
+{% endblock header %}
+
+{% block content %}
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre del curso</th>
+        <th>Grupos</th>
+        <th>Año Académico</th>
+      </tr>
+    </thead>
+    <tbody>
+  {% for course in courses %}
+    <tr>
+      {% set my_id = course['id'] %}
+      <td> <a href="{{url_for('courses.course_page',iden=my_id)}}"> {{course['name']}} </a> </td>
+      <td> {{course['groups']}} </td>
+      <td> {{course['year1']}}/{{course['year2']}} </td>
+    </tr>
+  {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h2>{% block title %}Crear Grupo{% endblock title %}</h2>
+{% endblock header %}
+
+{% block content %}
+
+
+<form method="post" enctype="multipart/form-data">
+<ul>
+    <li class="form-inline">
+        <label class="input-group-text" for="filetype">Nivel: </label>
+        <select class="form-select" id="level" name="level">
+            <option value="E1">1°ESO</option>
+            <option value="E2">2°ESO</option>
+            <option value="E3">3°ESO</option>
+            <option value="E4">4°ESO</option>
+            <option value="B1">1°BACH</option>
+            <option value="B2">2°BACH</option>
+            <option value="otro">Otros</option>
+        </select>
+    </li>
+    <li class="form-inline">
+        <label for="linea">Linea o líneas: </label>
+        <input type="text" name="linea" id="linea" value="{{request.form['linea']}}"
+               class="form-control">
+    </li>
+    <li class="form-inline">
+        <label>Curso académico: </label>
+        <input type="text" id="datepicker" name="year1"/>
+        <input type="text" id="datepicker2" name="year2"/>
+    <li class="form-check-inline" style="margin-top:5px">
+        <label>¿Es grupo materia? </label>
+        <input class="form-check-input" type="radio" name="is_gm" id="inlineRadio1" value="1"/>
+        <label class="form-check-label" for="inlineRadio1">Sí</label>
+        <input class="form-check-input" type="radio" name="is_gm" id="inlineRadio2" value="0"/>
+        <label class="form-check-label" for="inlineRadio2">No</label>
+    </li>
+    <li class="form-inline">
+        <label class="input-group-text" for="filetype">Tipo de fichero: </label>
+        <select class="form-select" id="filetype" name="filetype">
+            <option value="r">Fichero de raíces</option>
+            <option value="m">Fichero de moodle</option>
+            <option value="j">Fichero de jefatura</option>
+            <option value="no_file">No adjunto fichero</option>
+        </select>
+    </li>
+    <li class="form-inline">
+        <label class="input-group-text" for="group_file">Fichero del grupo: </label>
+        <input type="file" class="form-control" name="file" id="group_file">
+    </li>
+</ul>
+    <div class="form-group" style="margin-top:5px">
+        <input type="submit" value="Añade grupo" class="submit-btn">
+    </div>
+</form>
+
+<script>$("#datepicker").datepicker({
+    format: "yyyy",
+    viewMode: "years",
+    minViewMode: "years"
+});
+$("#datepicker2").datepicker({
+    format: "yyyy",
+    viewMode: "years",
+    minViewMode: "years"
+});
+
+</script>
+{% endblock content %}

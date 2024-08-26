@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h2>{% block title %}Grupos{% endblock title %}</h2>
+{% endblock header %}
+
+{% block content %}
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre del grupo</th>
+        <th>Es grupo materia</th>
+        <th>Año académico </th>
+        <th>Fecha de creación</th>
+      </tr>
+    </thead>
+    <tbody>
+  {% for group in groups %}
+    <tr>
+      {% set my_id = group['id'] %}
+      <td> <a href="{{url_for('groups.group_page',iden=my_id)}}"> {{group['name']}} </a></td>
+      <td> {{group['is_gm']}} </td>
+      <td> {{group['year1']}}/{{group['year2']}}</td>
+      <td> {{group['created']}} </td>
+    </tr>
+  {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

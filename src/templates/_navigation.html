@@ -1,0 +1,46 @@
+<nav class="navbar navbar-inverse">
+    <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li class="active"><a data-toggle="tooltip" title="Home"
+                                  href="{{ url_for('pages.home') }}">Home</a>
+            </li>
+            <li class="active"><a data-toggle="tooltip" title="cursos"
+                                  href="{{ url_for('courses.courses') }}">Cursos</a>
+            </li>
+            <li class="active"><a data-toggle="tooltip" title="grupos de alumnos"
+                                  href="{{ url_for('groups.groups') }}">Grupos de alumnos</a>
+            </li>
+             <li class="active"><a data-toggle="tooltip" title="Calificaciones"
+                                  href="{{ url_for('events.events') }}">Calificaciones</a>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown"
+                   title="Acciones" href="#">Acciones
+                    <span class="caret"><!-- --></span></a>
+                <ul class="dropdown-menu">
+                    <li title="Importar grupo" data-toggle="tooltip">
+                        <a href="{{ url_for('groups.create_group') }}">Añadir grupo</a>
+                    </li>
+                    <li title="Crear curso" data-toggle="tooltip">
+                        <a href="{{ url_for('courses.create_course') }}">Crear Curso</a>
+                    </li>
+                    <li title="Añadir calificación" data-toggle="tooltip">
+                        <a href="{{ url_for('courses.create_course') }}">Añadir calificación</a>
+                    </li>
+                    <li title="Editar grupo" data-toggle="tooltip">
+                        <a href="{{ url_for('groups.create_group') }}">Editar grupo</a>
+                    </li>
+                    <li title="Editar curso" data-toggle="tooltip">
+                        <a href="{{ url_for('courses.create_course') }}">Editar Curso</a>
+                    </li>
+                    <li title="Añadir alumno" data-toggle="tooltip">
+                        <a href="{{ url_for('courses.create_course') }}">Añadir alumno</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active"><a data-toggle="tooltip" title="about"
+                                  href="{{ url_for('pages.about') }}">About</a>
+            </li>
+        </ul>
+    </div>
+</nav>

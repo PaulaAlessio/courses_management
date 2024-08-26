@@ -1,0 +1,4 @@
+board.sqlite
+students_data/
+.idea
+src/__pycache__/

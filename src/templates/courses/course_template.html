@@ -1,0 +1,29 @@
+{% extends 'courses/base_courses.html' %}
+{% block header %}
+<h1>Curso: {{ name }}</h1>
+{% endblock header %}
+
+{% block content %}
+<nav class="navbar navbar-inverse">
+    <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li class="active"><a data-toggle="tooltip" title="Home"
+                                  href="{{ url_for('pages.home') }}">Home</a>
+            </li>
+            <li class="active"><a data-toggle="tooltip" title="cursos"
+                                  href="{{ url_for('courses.courses') }}">Cursos</a>
+            </li>
+            <li class="active"><a data-toggle="tooltip" title="nuevo"
+                                  href="{{ url_for('pages.home') }}">Añadir alumnos</a>
+            </li>
+            <li class="active"><a data-toggle="tooltip" title="nuevo"
+                                  href="{{ url_for('pages.home') }}">Nuevo tipo de calificación</a>
+            </li>
+            <li class="active"><a data-toggle="tooltip" title="about"
+                                  href="{{ url_for('pages.about') }}">Lista de calificaciones</a>
+            </li>
+        </ul>
+    </div>
+    </div>
+</nav>
+{% endblock content %}
