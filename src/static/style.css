@@ -1,7 +1,7 @@
 /* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {
-  margin-bottom: 50px;
-  border-radius: 0;
+  margin-bottom: 20px;
+  border-radius: 2;
 }
 
 /* Remove the jumbotron's default bottom margin */
@@ -32,15 +32,11 @@ img.img-responsive {
   position: absolute; !important
 }
 
-/* Center icon vertically in navigation bar*/
-.navbar-nav > li > a  {
-  line-height: 25px;
-}
 
 .btn-font10 {
    font-size: 10pt;
 }
-
+/*
 ul {
   display: block;
   list-style-type: disc;
@@ -49,4 +45,4 @@ ul {
   margin-left: 0;
   margin-right: 0;
   padding-left: 40px;
-}
+}*/
