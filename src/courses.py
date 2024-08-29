@@ -51,11 +51,11 @@ def courses():
   return render_template("courses/courses.html", courses=my_courses)
 
 
-@bp.route("/courses/<iden>")
-def course_page(iden):
+@bp.route("/courses/<c_id>")
+def course_page(c_id):
   db = get_db()
   my_course = db.execute(
-    "SELECT * FROM course WHERE id=?", iden
+    "SELECT * FROM course WHERE id=?", c_id
   ).fetchone()
   students = db.execute(
     "SELECT "
@@ -66,5 +66,7 @@ def course_page(iden):
     "course.id = course_group.course_id and _group.id = course_group.group_id and "
     "_group.id = student_group.group_id and student_group.student_id = student.id"
   ).fetchall()
-
-  return render_template("courses/course_template.html", name=my_course['name'], students=students)
+  tabs = db.execute("SELECT * from tab;")
+  return render_template("courses/course_template.html",
+                         course=my_course, students=students,
+                         tabs=list(tabs))

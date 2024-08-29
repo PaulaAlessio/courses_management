@@ -17,7 +17,7 @@
     {% for course in courses %}
     <tr>
         {% set my_id = course['id'] %}
-        <td><a href="{{url_for('courses.course_page',iden=my_id)}}"> {{course['name']}} </a></td>
+        <td><a href="{{url_for('courses.course_page',c_id=my_id)}}"> {{course['name']}} </a></td>
         <td> {{course['groups']}}</td>
         <td> {{course['year1']}}/{{course['year2']}}</td>
     </tr>

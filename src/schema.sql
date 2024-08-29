@@ -60,6 +60,7 @@ DROP TABLE IF EXISTS tab_column;
 CREATE TABLE tab_column (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "tab_id" INTEGER,
+  "course_id" INTEGER NOT NULL,
   "name" TEXT NOT NULL
 );
 

@@ -2,14 +2,14 @@
 <html lang="es">
 
 <head>
-  <title>Grupos - {% block title %}{% endblock title %}</title>
+    <title>Grupos - {% block title %}{% endblock title %}</title>
 </head>
-  {% include("_bootstrap_stuff.html") %}
+{% include("_bootstrap_stuff.html") %}
 <body>
- <header>
+<header>
     {% block header %}{% endblock header %}
-  </header>
-  <main>
-{% block content %} {% endblock content %}
-  </main>
+</header>
+<main>
+    {% block content %} {% endblock content %}
+</main>
 </body>

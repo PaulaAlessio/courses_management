@@ -15,6 +15,7 @@ def init_db_command():
   with current_app.open_resource("schema.sql") as f:
     db.executescript(f.read().decode("utf-8"))
   create_event_type_table(db)
+  create_tab_table(db)
   click.echo("You successfully initialized the database!")
 
 
@@ -32,6 +33,16 @@ def create_event_type_table(_db):
   _db.execute("INSERT INTO event_type (name, type, max_value, min_value, max_color, min_color, mean_color) VALUES ("
               "'boletín', 'integer', 10, 0, 5, 4, 'yellow')")
   _db.commit()
+
+
+def create_tab_table(_db):
+  _db.execute("INSERT INTO TAB (name) VALUES ('Primer Trimestre')")
+  _db.execute("INSERT INTO TAB (name) VALUES ('Segundo Trimestre')")
+  _db.execute("INSERT INTO TAB (name) VALUES ('Tercer Trimestre')")
+  _db.execute("INSERT INTO TAB (name) VALUES ('Asistencia')")
+  _db.execute("INSERT INTO TAB (name) VALUES ('Amonestaciones')")
+  _db.commit()
+
 
 def get_db():
   if "db" not in g:
