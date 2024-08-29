@@ -35,7 +35,7 @@ database error making the page rendering impossible, ;-).
 
 ## How to create a dummy example
 
-In folder `dummy_students_data` you can find data to play with. 
+In folder `dummy_data` you can find data to play with. 
 
 ### Importar grupo
 The first thing you have to do is to import student groups. The file formats at 
