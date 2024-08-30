@@ -9,40 +9,106 @@
 <ul class="nav nav-tabs" role="tablist">
     {% for tab in tabs %}
     {% set tab_id = tab['id'] %}
-       <li class="nav-item" role="presentation">
-            <a class="nav-link" id="tab-{{tab['id']}}" data-bs-toggle="tab" href="#tabpanel-{{tab['id']}}" role="tab"
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="tab-{{tab['id']}}" data-bs-toggle="tab" href="#tabpanel-{{tab['id']}}" role="tab"
            aria-controls="tabpanel-{{tab['id']}}" aria-selected="true"> {{tab['name']}}</a>
-       </li>
+    </li>
     {% endfor %}
 </ul>
 <div class="tab-content pt-5" id="tab-content">
     {% for tab in tabs %}
-    <div class="tab-pane" id="tabpanel-{{tab['id']}}" role="tabpanel" aria-labelledby="tab-{{tab['id']}}">Tab {{tab['name']}} selected
+    <div class="tab-pane" id="tabpanel-{{tab['id']}}" role="tabpanel" aria-labelledby="tab-{{tab['id']}}">
+        <p> {{tab['name']}} :
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Nueva columna
+            </button>
+        </p>
+        <!-- POP UP -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                            {{course['name']}}, {{tab['name']}}
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" enctype="multipart/form-data" id="tipo_evento">
+                            <input type = "hidden" name = "tab_id" value = "{{tab['id']}}" />
+                            <input type = "hidden" name = "course_id" value = "{{course['id']}}" />
+                            <div class="mb-3">
+                                <label class="form-label">Tipo de evento</label>
+                                <select class="form-select" id="level" name="event_type">
+                                    {% for type in events_type %}
+                                    <option value="{{type['name']}}">{{type['name']}}</option>
+                                    {% endfor %}
+                                </select>
+                                <div id="selectHelp" class="form-text">Selecciona uno
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="event_name" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="event_name" name="name"
+                                       aria-describedby="nameHelp">
+                                <div id="nameHelp" class="form-text">Preferiblemente nombres cortos.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <!--<input type="submit" value="Añade grupo" class="submit-btn"> -->
+                                <button type="submit" class="btn btn-primary" name="submit_button" value="add_column">
+                                    Nueva columna
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--<div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" value="add_event">Añadir evento</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
 
-<table class="table table-striped w-auto" align="left" id="course_table" >
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Grupo</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for student in students %}
-    <tr>
-        <td> {{student['st_name']}}</td>
-        <td> {{student['surname']}}</td>
-        <td> {{student['g_name']}}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
- </div>
+
+        <table class="table table-striped w-auto" align="left" id="course_table">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Grupo</th>
+                {% for column in columns %}
+                {% if column['tab_id'] == tab['id'] %}
+                <th>{{column['name']}}</th>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+            <tr>
+                <td> {{student['st_name']}}</td>
+                <td> {{student['surname']}}</td>
+                <td> {{student['g_name']}}</td>
+                {% for column in columns %}
+                {% if column['tab_id'] == tab['id'] %}
+                <td>??</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% endfor %}
 </div>
 
 <script>
    new DataTable('#course_table');
+
+
+
 </script>
 {% endblock content %}
 

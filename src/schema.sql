@@ -59,15 +59,17 @@ CREATE TABLE tab (
 DROP TABLE IF EXISTS tab_column;
 CREATE TABLE tab_column (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "tab_id" INTEGER,
+  "tab_id" INTEGER NOT NULL,
   "course_id" INTEGER NOT NULL,
+  "type_id" INTEGER NOT NULL,
   "name" TEXT NOT NULL
 );
+
 
 DROP TABLE IF EXISTS event_type;
 CREATE TABLE event_type (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "name" TEXT NOT NULL,
+  "name" TEXT UNIQUE NOT NULL,
   "type" TEXT NOT NULL,
   "max_value" REAL,
   "min_value" REAL,

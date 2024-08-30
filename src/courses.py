@@ -13,7 +13,7 @@ bp = Blueprint("courses", __name__)
 @bp.route("/create_course", methods=("GET", "POST"))
 def create_course():
   db = get_db()
-  grouplist = db.execute("SELECT * FROM _group order by created")
+  group_list = db.execute("SELECT * FROM _group order by created")
   if request.method == "POST":
     name = request.form["name"]
     group_ids = request.form.getlist("group_ids")
@@ -36,7 +36,7 @@ def create_course():
         db.commit()
 
       return redirect(url_for("courses.courses"))
-  return render_template("courses/create_course.html", groupList=grouplist)
+  return render_template("courses/create_course.html", groupList=group_list)
 
 
 @bp.route("/courses")
@@ -51,7 +51,7 @@ def courses():
   return render_template("courses/courses.html", courses=my_courses)
 
 
-@bp.route("/courses/<c_id>")
+@bp.route("/courses/<c_id>",  methods=("GET", "POST"))
 def course_page(c_id):
   db = get_db()
   my_course = db.execute(
@@ -66,7 +66,29 @@ def course_page(c_id):
     "course.id = course_group.course_id and _group.id = course_group.group_id and "
     "_group.id = student_group.group_id and student_group.student_id = student.id"
   ).fetchall()
-  tabs = db.execute("SELECT * from tab;")
+  tabs = db.execute("SELECT * from tab;").fetchall()
+  columns = db.execute("SELECT * from tab_column").fetchall()
+  events = db.execute("SELECT * from event")
+  events_type = db.execute("SELECT * from event_type")
+  if request.method == "POST":
+    if request.form['submit_button'] == 'add_column':
+      _add_event(request.form, db)
+    elif request.form['submit_button'] == 'something_else':
+      pass  # do something else
+    else:
+      pass  # unknown
   return render_template("courses/course_template.html",
                          course=my_course, students=students,
-                         tabs=list(tabs))
+                         tabs=list(tabs), events_type=events_type,
+                         columns=columns)
+
+
+def _add_event(_form, _db):
+  tab_id = _form['tab_id']
+  course_id = _form['course_id']
+  name = _form['name']
+  event_type = _form['event_type']
+  my_type = _db.execute("SELECT * FROM event_type WHERE name=?", (event_type,)).fetchone()
+  _db.execute("""INSERT INTO tab_column (tab_id, course_id, type_id, name)
+  VALUES (?, ?, ?, ?)""", (tab_id, course_id, my_type['id'], name))
+  _db.commit()
