@@ -81,7 +81,7 @@ CREATE TABLE event_type (
 DROP TABLE IF EXISTS event;
 CREATE TABLE event (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "datetime" TEXT NOT NULL,
+  "datetime" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "tab_column_id" INTEGER NOT NULL,
   "student_id" INTEGER NOT NULL,
   "event_type_id" INTEGER NOT NULL,

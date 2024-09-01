@@ -29,7 +29,8 @@ def create_group():
     file = request.files['file']
     if name and file and _allowed_file(file.filename):
       db = get_db()
-      db.execute("INSERT INTO _group (_level, linea, name, year1, year2, is_gm) VALUES (?, ?, ?, ?, ?, ?)",
+      db.execute("""INSERT INTO _group 
+                 (_level, linea, name, year1, year2, is_gm) VALUES (?, ?, ?, ?, ?, ?)""",
                  (level, linea, name, year1, year2, is_gm)
                  )
       db.commit()
@@ -102,6 +103,7 @@ def insert_student_list_moodle(_df, _db):
   dfout = _drop_entries(double_entry, dfout)
   dfout.to_sql('student', _db, if_exists='append', index=False)
   return ids
+
 
 def insert_student_list_jefatura(_df, _db):
   pass

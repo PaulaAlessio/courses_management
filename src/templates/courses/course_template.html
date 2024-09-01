@@ -1,11 +1,10 @@
 {% extends 'courses/base_courses.html' %}
 {% block header %}
-<h1>Curso: {{ course['name'] }}</h1>
+<h1>Curso: {{ course_name }}</h1>
 {% endblock header %}
 
 {% block content %}
 
-{% set c_id = course['id'] %}
 <ul class="nav nav-tabs" role="tablist">
     {% for tab in tabs %}
     {% set tab_id = tab['id'] %}
@@ -30,14 +29,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">
-                            {{course['name']}}, {{tab['name']}}
+                            course_name, {{tab['name']}}
                         </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="post" enctype="multipart/form-data" id="tipo_evento">
+                        <form  enctype="multipart/form-data" id="new_column" >
                             <input type = "hidden" name = "tab_id" value = "{{tab['id']}}" />
-                            <input type = "hidden" name = "course_id" value = "{{course['id']}}" />
+                            <input type = "hidden" name = "course_id" value = "{{c_id}}" />
                             <div class="mb-3">
                                 <label class="form-label">Tipo de evento</label>
                                 <select class="form-select" id="level" name="event_type">
@@ -63,10 +62,6 @@
                             </div>
                         </form>
                     </div>
-                    <!--<div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="add_event">Añadir evento</button>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -86,14 +81,16 @@
             </tr>
             </thead>
             <tbody>
-            {% for student in students %}
-            <tr>
-                <td> {{student['st_name']}}</td>
-                <td> {{student['surname']}}</td>
-                <td> {{student['g_name']}}</td>
+            {% for index, event in events[tab['id']].iterrows() %}
+            <tr id="{{event['st_id']}}" class="single-line">
+                <td> {{event['st_name']}}</td>
+                <td> {{event['surname']}}</td>
+                <td> {{event['g_name']}}</td>
                 {% for column in columns %}
                 {% if column['tab_id'] == tab['id'] %}
-                <td>??</td>
+                <td contenteditable="true" id="cc" data-course_id="{{c_id}}"
+                    data-tab_id="{{tab['id']}}" data-column_id="{{column['id']}}"
+                    class="single-line">{{event[column['name']]}}</td>
                 {% endif %}
                 {% endfor %}
             </tr>
@@ -105,10 +102,10 @@
 </div>
 
 <script>
-   new DataTable('#course_table');
-
-
-
+   table = new DataTable('#course_table');
 </script>
+
+ <!-- APP Actions -->
+<script src="/static/edittables.js"></script>
 {% endblock content %}
 
