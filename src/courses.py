@@ -92,7 +92,7 @@ def add_event_column(c_id):
   return jsonify(json_data), 201
 
 
-def get_events(c_id, t_id):
+def get_events(c_id, t_id) -> pd.DataFrame:
   db = get_db()
   students = _get_student_list_to_pandas(db, c_id)
   exercises_list = _get_tasks_list_to_pandas(db, c_id, t_id)
@@ -107,7 +107,6 @@ def get_events(c_id, t_id):
 @bp.route('/courses/api/<c_id>/<t_id>')
 def get_table(c_id, t_id):
   result = get_events(c_id, t_id)
-  # print(students.to_dict('index'))
   return jsonify(result.to_dict('index'))
 
 
@@ -165,13 +164,14 @@ def _get_events_list_to_pandas(_db, _student_ids, _column_ids):
 
   df = pd.read_sql_query(query, _db, params=_student_ids + _column_ids)
   df = pandas.pivot(df, index="student_id", columns="name", values="value_int")
-  df = df.rename_axis(None)
+  df = df.rename_axis()
   print(df)
   return df
 
 
 def _get_events_list(_db, _student_ids, _column_ids):
-  query = """SELECT event.tab_column_id, event.student_id, event.value_real, event.value_int, event.value_text, tab_column.name FROM 
+  query = """SELECT event.tab_column_id, event.student_id, event.value_real, 
+             event.value_int, event.value_text, tab_column.name FROM 
              event, tab_column WHERE event.tab_column_id=tab_column.id AND 
              student_id IN ({seq_st}) 
              AND tab_column_id IN ({seq_col})""".format(
