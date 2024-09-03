@@ -7,6 +7,7 @@ from flask import (
   render_template,
   request,
   url_for,
+  jsonify
 )
 import pandas as pd
 from src.database import get_db
@@ -24,7 +25,7 @@ def create_group():
     is_gm = (request.form["is_gm"] == "1")
     year1 = request.form['year1']
     year2 = request.form['year2']
-    name = level+linea+'_'+year1[2:]+year2[2:]
+    name = level + linea + '_' + year1[2:] + year2[2:]
     filetype = request.form['filetype']
     file = request.files['file']
     if name and file and _allowed_file(file.filename):
@@ -64,6 +65,26 @@ def groups():
     "SELECT * FROM _group ORDER BY created DESC"
   ).fetchall()
   return render_template("groups/groups.html", groups=my_groups)
+
+
+@bp.route("/groups/api/delete/<group_id>", methods=["POST"])
+def delete_group(group_id):
+  db = get_db()
+
+  query_lst = [
+    """DELETE FROM student WHERE id IN 
+        (SELECT student_id FROM student_group WHERE group_id=?)""",
+    """DELETE FROM student_group WHERE group_id=?""",
+    """DELETE FROM _group WHERE id=?""",
+    """DELETE FROM event WHERE student_id IN 
+         (SELECT student_id FROM student_group WHERE group_id=?)"""
+  ]
+  for query in query_lst:
+    db.execute(query, group_id)
+  print(query_lst)
+  db.commit()
+
+  return jsonify("true")
 
 
 @bp.route("/groups/<iden>")
@@ -142,7 +163,7 @@ def _sanity_check(df, c):
   for _id in df['id']:
     output = c.execute("SELECT * FROM student WHERE id=?", (_id,)).fetchone()
     if output:
-     existing_students.append(_id)
+      existing_students.append(_id)
   return existing_students
 
 

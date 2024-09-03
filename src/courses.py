@@ -50,6 +50,19 @@ def courses():
     "FROM(course, course_group, _group) WHERE "
     "course.id = course_group.course_id and _group.id = course_group.group_id "
   ).fetchall()
+  my_courses = db.execute(
+    """SELECT course.id, course.created, course.name, course.year1, course.year2, 
+       group_concat(_group.name) AS groups 
+       FROM course
+       JOIN course_group ON course.id = course_group.course_id
+       JOIN _group ON _group.id = course_group.group_id
+       GROUP BY course.id, course.created, course.name, course.year1, course.year2
+       HAVING COUNT(*) > 0;
+    """).fetchall()
+  print(my_courses)
+  print(len(my_courses))
+  for course in my_courses:
+    print(course)
   return render_template("courses/courses.html", courses=my_courses)
 
 
@@ -65,7 +78,7 @@ def course_page(c_id):
     event_dict[tab] = get_events(c_id, tab)
   columns = db.execute("SELECT * from tab_column WHERE course_id=?", (c_id,)).fetchall()
   events_type = db.execute("SELECT * from event_type")
-  return render_template("courses/course_template.html",
+  return render_template("courses/course_template.html", course=my_course,
                          course_name=my_course['name'], c_id=c_id,
                          tabs=list(tabs), events_type=events_type, events=event_dict,
                          columns=columns)
@@ -163,6 +176,7 @@ def _get_events_list_to_pandas(_db, _student_ids, _column_ids):
     seq_col=','.join(['?'] * len(_column_ids)))
 
   df = pd.read_sql_query(query, _db, params=_student_ids + _column_ids)
+  print(df)
   df = pandas.pivot(df, index="student_id", columns="name", values="value_int")
   df = df.rename_axis()
   print(df)

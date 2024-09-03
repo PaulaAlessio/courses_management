@@ -1,33 +1,59 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h2>{% block title %}Grupos{% endblock title %}</h2>
+<h2>{% block title %}Grupos{% endblock title %}</h2>
 {% endblock header %}
 
 {% block content %}
 <table class="table table-striped" id="groups_list">
     <thead>
-      <tr>
+    <tr>
+        <th>Delete</th>
         <th>Nombre del grupo</th>
         <th>Es grupo materia</th>
-        <th>Año académico </th>
+        <th>Año académico</th>
         <th>Fecha de creación</th>
-      </tr>
+    </tr>
     </thead>
     <tbody>
-  {% for group in groups %}
+    {% for group in groups %}
     <tr>
-      {% set my_id = group['id'] %}
-      <td> <a href="{{url_for('groups.group_page',iden=my_id)}}"> {{group['name']}} </a></td>
-      <td> {{group['is_gm']}} </td>
-      <td> {{group['year1']}}/{{group['year2']}}</td>
-      <td> {{group['created']}} </td>
+        {% set my_id = group['id'] %}
+        <td>
+            <button type="button" class="btn btn-danger" onclick="delete_group({{my_id}})"><i class="bi bi-trash"></i>
+            </button>
+        </td>
+        <td><a href="{{url_for('groups.group_page',iden=my_id)}}"> {{group['name']}} </a></td>
+        <td> {{group['is_gm']}}</td>
+        <td> {{group['year1']}}/{{group['year2']}}</td>
+        <td> {{group['created']}}</td>
     </tr>
-  {% endfor %}
+    {% endfor %}
     </tbody>
 </table>
 
 <script>
+
    new DataTable('#groups_list');
+   async function delete_group(group_id) {
+  try {
+    const res = await fetch(
+      '/groups/api/delete/' + group_id,
+      {
+        method: 'POST',
+        body: group_id,
+      },
+    );
+    console.log(res)
+    const resData = await res;
+    window.location.reload();
+  } catch (err) {
+    console.log(err.message);
+  }
+   };
+
+
+
+
 </script>
 {% endblock content %}
