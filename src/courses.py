@@ -45,12 +45,6 @@ def create_course():
 def courses():
   db = get_db()
   my_courses = db.execute(
-    "SELECT course.id, course.created, course.name, course.year1, course.year2, "
-    "group_concat(_group.name) as groups "
-    "FROM(course, course_group, _group) WHERE "
-    "course.id = course_group.course_id and _group.id = course_group.group_id "
-  ).fetchall()
-  my_courses = db.execute(
     """SELECT course.id, course.created, course.name, course.year1, course.year2, 
        group_concat(_group.name) AS groups 
        FROM course
@@ -59,10 +53,6 @@ def courses():
        GROUP BY course.id, course.created, course.name, course.year1, course.year2
        HAVING COUNT(*) > 0;
     """).fetchall()
-  print(my_courses)
-  print(len(my_courses))
-  for course in my_courses:
-    print(course)
   return render_template("courses/courses.html", courses=my_courses)
 
 
@@ -79,7 +69,6 @@ def course_page(c_id):
   columns = db.execute("SELECT * from tab_column WHERE course_id=?", (c_id,)).fetchall()
   events_type = db.execute("SELECT * from event_type")
   return render_template("courses/course_template.html", course=my_course,
-                         course_name=my_course['name'], c_id=c_id,
                          tabs=list(tabs), events_type=events_type, events=event_dict,
                          columns=columns)
 
@@ -109,7 +98,6 @@ def get_events(c_id, t_id) -> pd.DataFrame:
   db = get_db()
   students = _get_student_list_to_pandas(db, c_id)
   exercises_list = _get_tasks_list_to_pandas(db, c_id, t_id)
-  print(exercises_list)
   student_ids = students['st_id'].to_list()
   column_ids = exercises_list['id'].to_list()
   events = _get_events_list_to_pandas(db, student_ids, column_ids)
@@ -123,9 +111,18 @@ def get_table(c_id, t_id):
   return jsonify(result.to_dict('index'))
 
 
-@bp.route('/courses/<c_id>/<t_id>', methods=['PUT'])
-def update(c_id, t_id):
-  return []
+@bp.route('/courses/api/update_event/<ev_id>', methods=['PUT'])
+def update(ev_id):
+  db = get_db()
+  json_data = request.get_json()
+  dict_data = dict(json_data)
+  print(dict_data)
+  query = """UPDATE event SET value_int = ?  WHERE id=?"""
+  print(query)
+  print(dict_data['value'], dict_data['event_id'])
+  db.execute(query, (dict_data['value'], dict_data['event_id']))
+  db.commit()
+  return jsonify("true")
 
 
 def _get_student_list(_db, _c_id):
@@ -167,7 +164,7 @@ def _get_tasks_list_to_pandas(_db, _c_id, _t_id):
 
 
 def _get_events_list_to_pandas(_db, _student_ids, _column_ids):
-  query = """SELECT event.tab_column_id, event.student_id,  
+  query = """SELECT event.id as event_id, event.tab_column_id, event.student_id,  
              event.value_int, tab_column.name FROM 
              event, tab_column WHERE event.tab_column_id=tab_column.id AND 
              student_id IN ({seq_st}) 
@@ -176,15 +173,15 @@ def _get_events_list_to_pandas(_db, _student_ids, _column_ids):
     seq_col=','.join(['?'] * len(_column_ids)))
 
   df = pd.read_sql_query(query, _db, params=_student_ids + _column_ids)
-  print(df)
-  df = pandas.pivot(df, index="student_id", columns="name", values="value_int")
+  df = pandas.pivot(df, index="student_id", columns="name",
+                    values=["value_int", "event_id"])
   df = df.rename_axis()
-  print(df)
   return df
 
 
 def _get_events_list(_db, _student_ids, _column_ids):
-  query = """SELECT event.tab_column_id, event.student_id, event.value_real, 
+  query = """SELECT event.id, 
+             event.tab_column_id, event.student_id, event.value_real, 
              event.value_int, event.value_text, tab_column.name FROM 
              event, tab_column WHERE event.tab_column_id=tab_column.id AND 
              student_id IN ({seq_st}) 

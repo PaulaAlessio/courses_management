@@ -70,7 +70,6 @@ def groups():
 @bp.route("/groups/api/delete/<group_id>", methods=["POST"])
 def delete_group(group_id):
   db = get_db()
-
   query_lst = [
     """DELETE FROM student WHERE id IN 
         (SELECT student_id FROM student_group WHERE group_id=?)""",
@@ -81,7 +80,6 @@ def delete_group(group_id):
   ]
   for query in query_lst:
     db.execute(query, group_id)
-  print(query_lst)
   db.commit()
 
   return jsonify("true")

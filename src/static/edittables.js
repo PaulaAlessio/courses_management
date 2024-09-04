@@ -63,11 +63,12 @@ doc.addEventListener("DOMContentLoaded", function(event) {
                let tr = event.target.closest('tr.single-line');
                let student_id = tr.id;
                let column_id = td.dataset.column_id;
+               let event_id = td.dataset.event_id;
                let tab_id = td.dataset.tab_id;
                let course_id = td.dataset.course_id;
                let value = td.textContent;
                console.log(student_id, tab_id, course_id, column_id, value);
-               xhr1.open("PUT", "/courses/" + course_id + "/" + tab_id);
+               xhr1.open("PUT", "/courses/api/update_event/" + event_id);
                xhr1.setRequestHeader("Content-Type", "application/json");
                // Check Status
                xhr1.onreadystatechange = function() {
@@ -92,8 +93,17 @@ doc.addEventListener("DOMContentLoaded", function(event) {
                 };//end onreadystate
 
                 xhr1.send(JSON.stringify( { student_id: student_id,
-                                            column_id: column_id } ));
-              
+                                            column_id: column_id,
+                                            event_id: event_id,
+                                            tab_id: tab_id,
+                                            course_id: course_id,
+                                            value: value} ));
+               console.log(JSON.stringify( { student_id: student_id,
+                                            column_id: column_id,
+                                            event_id: event_id,
+                                            tab_id: tab_id,
+                                            course_id: course_id,
+                                            value: value}));
                // Disable 'EDITABLE' property
                //td.setAttribute("contenteditable", "false");
 
