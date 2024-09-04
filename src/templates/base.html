@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 
+
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cuaderno del profesor - {% block title %}{% endblock title %}</title>
-   {% include("_bootstrap_stuff.html") %}
+
+    {% include("_bootstrap_stuff.html") %}
 </head>
 <body>
-<h1>Cuaderno del profesor</h1>
-{% include("_navigation.html") %}
-<section>
-    <header>
-        {% block header %}{% endblock header %}
-    </header>
-    <main>
-        {% block content %}<p>No messages.</p>{% endblock content %}
-    </main>
-</section>
+<div class="container-fluid overflow-hidden">
+    <div class="row vh-100 overflow-auto">
+        {% include("_sidebar_navigation.html") %}
+        <div class="col d-flex flex-column h-sm-100">
+            <header>
+                {% block header %}{% endblock header %}
+            </header>
+            <main class="row overflow-auto">
+                {% block content %}<p>No messages.</p>{% endblock content %}
+            </main>
+            <footer class="row bg-light py-4 mt-auto">
+                <div class="col"> Footer content here...</div>
+            </footer>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
