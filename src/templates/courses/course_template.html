@@ -1,4 +1,9 @@
 {% extends 'courses/base_courses.html' %}
+
+{% block title %}
+{{ course['name'] }}
+{% endblock title %}
+
 {% block header %}
 <h3>Curso: {{ course['name'] }}</h3>
 {% endblock header %}
@@ -67,7 +72,7 @@
         </div>
 
 
-        <table class="table table-striped w-auto" align="left" id="course_table">
+        <table class="table table-striped w-auto dt-no-wrap" align="left" id="course_table_{{tab['id']}}">
             <thead>
             <tr>
                 <th>Nombre</th>
@@ -105,7 +110,9 @@
 </div>
 
 <script>
-   table = new DataTable('#course_table');
+   {% for tab in tabs %}
+   table_{{tab['id']}} = new DataTable('#course_table_{{tab['id']}}');
+   {% endfor %}
 </script>
 
  <!-- APP Actions -->

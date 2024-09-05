@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es">
+    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <head>
     <meta charset="utf-8">
@@ -7,96 +9,70 @@
     <title>Cursos - {% block title %}{% endblock title %}</title>
     {% include("_bootstrap_stuff.html") %}
 </head>
-<body>
-<div class="container-fluid overflow-hidden">
-    <div class="row vh-100 overflow-auto">
-        <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 bg-dark d-flex sticky-top">
-            <div class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2 text-white">
-                <a href="/"
-                   class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5"><i class="bi bi-mortarboard-fill"></i> <span class="d-none d-sm-inline"> Cuaderno del profesor</span></span>
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto px-0">
+            <div id="sidebar" class="collapse collapse-horizontal show border-end bg-dark" >
+                <div id="sidebar-nav" class="list-group border-0 rounded-0 text-sm-start min-vh-100">
+                                    <a href="/"
+                   class="d-flex align-items-center pb-sm-10 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5"> <span class="d-10 d-sm-inline"> . . .</span> <i class="bi bi-mortarboard-fill"></i> </span>
                 </a>
                 <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start"
                     id="menu">
                     <li class="nav-item">
-                        <a href="{{ url_for('pages.home') }}" class="nav-link px-sm-0 px-2">
+                        <a href="{{ url_for('pages.home') }}" class="nav-link px-sm-10 px-2">
                             <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Home</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url_for('courses.courses') }}" class="nav-link px-sm-0 px-2">
+                        <a href="{{ url_for('courses.courses') }}" class="nav-link px-sm-10 px-2">
                             <i class="bi bi-journal-richtext"></i><span
                                 class="ms-1 d-none d-sm-inline">Cursos</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('groups.groups') }}" class="nav-link px-sm-0 px-2">
+                        <a href="{{ url_for('groups.groups') }}" class="nav-link px-sm-10 px-2">
                             <i class="bi bi-people-fill"></i><span class="ms-1 d-none d-sm-inline">Grupos</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('events.events') }}" class="nav-link px-sm-0 px-2">
+                        <a href="{{ url_for('events.events') }}" class="nav-link px-sm-10 px-2">
                             <i class="bi bi-activity"></i><span
-                                class="ms-1 d-none d-sm-inline">Tipos de actividad</span>
+                                class="ms-1 d-none d-sm-inline">Tipos de actividad  </span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('events.events') }}" class="nav-link px-sm-0 px-2">
+                        <a href="{{ url_for('events.events') }}" class="nav-link px-sm-10 px-2">
                             <i class="bi bi-plus-square"></i><span
                                 class="ms-1 d-none d-sm-inline">Nueva pestaña</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('events.events') }}" class="nav-link px-sm-0 px-2">
+                        <a href="{{ url_for('events.events') }}" class="nav-link px-sm-10 px-2">
                             <i class="bi bi-person-plus-fill"></i><span
                                 class="ms-1 d-none d-sm-inline">Añadir alumnos</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('events.events') }}" class="nav-link px-sm-0 px-2">
+                        <a href="{{ url_for('events.events') }}" class="nav-link px-sm-10 px-2">
                             <i class="bi bi-journal-plus"></i><span
                                 class="ms-1 d-none d-sm-inline">Añadir actividad</span>
                         </a>
                     </li>
 
                 </ul>
-
-                <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
-                    <a href="#"
-                       class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                       id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="d-none d-sm-inline mx-1"> <i class="bi bi-info-circle"></i> Info</span>
-                    </a>
-
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="{{ url_for('pages.home') }}">About</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
-                    </ul>
                 </div>
             </div>
         </div>
-
-
-        <div class="col d-flex flex-column h-sm-100">
-            <main class="row overflow-auto">
-                <div class="col pt-4">
+        <main class="col ps-md-2 pt-2">
+            <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse" class="border rounded-3 p-1 text-decoration-none"><i class="bi bi-arrow-bar-left"></i></a>
                     {% block header %}{% endblock header %}
                     {% block content %} {% endblock content %}
-                </div>
-            </main>
-            <footer class="row bg-light py-4 mt-auto">
-                <div class="col"> Footer content here...</div>
-            </footer>
-        </div>
 
+        </main>
     </div>
 </div>
 
-
-</body>
+</html>
